@@ -40,21 +40,21 @@ const Footer = () => {
   const Social = styled.img`
     height: 25px;
     width: 25px;
-    padding:1px;
-    margin-left:1rem;
-    transition:0.3s;
+    padding: 1px;
+    margin-left: 1rem;
+    transition: 0.3s;
     &:hover {
-      transform:scale(1.1);
+      transform: scale(1.1);
     }
   `;
-  const GetApp = styled.img` 
+  const GetApp = styled.img`
     height: 65px;
     width: 200px;
     transition: 0.5s;
-    margin:0.4rem;
-    text-align:center;
+    margin: 0.4rem;
+    text-align: center;
     &:hover {
-      transform:scale(1.1)
+      transform: scale(1.1);
     }
   `;
 
@@ -128,13 +128,17 @@ const Footer = () => {
             </UL>
           </div>
           <div className="col-sm ">
-            <div className="row text-center"><a href="http://">
-              <GetApp src={playStore}></GetApp>
-            </a></div>
+            <div className="row text-center">
+              <a href="http://">
+                <GetApp src={playStore}></GetApp>
+              </a>
+            </div>
             <br />
-            <div className="row text-center"><a href="http://">
-              <GetApp src={appStore}></GetApp>
-            </a></div>
+            <div className="row text-center">
+              <a href="http://">
+                <GetApp src={appStore}></GetApp>
+              </a>
+            </div>
           </div>
         </div>
 
@@ -232,10 +236,18 @@ const Footer = () => {
             <CopyRight>©2021 Swiggy</CopyRight>
           </div>
           <div className="col-4 text-end">
-            <a href="http://"><Social src={Facebook}></Social></a>
-            <a href="http://"><Social src={pinInterest}></Social></a>
-            <a href="http://"><Social src={Instagram}></Social></a>
-            <a href="http://"><Social src={Twitter}></Social></a>
+            <a href="http://">
+              <Social src={Facebook}></Social>
+            </a>
+            <a href="http://">
+              <Social src={pinInterest}></Social>
+            </a>
+            <a href="http://">
+              <Social src={Instagram}></Social>
+            </a>
+            <a href="http://">
+              <Social src={Twitter}></Social>
+            </a>
           </div>
         </div>
       </div>

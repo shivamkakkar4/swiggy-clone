@@ -44,7 +44,7 @@ export const Subtitle = styled.p`
   margin: 0 0 30px 0;
 `;
 
-export const Button = styled.button`
+export const CustomButton = styled.button`
   background: ${props => props.background};
   color: ${props => (props.black ? "#000000" : "#ffffff")};
   padding: 0px 28px;
