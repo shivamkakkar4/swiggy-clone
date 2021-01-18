@@ -1,6 +1,42 @@
 import React from "react";
 import { Input, Drawer, Form } from "antd";
 import SignupImage from "./Images/Upper/login-image.png";
+import styled from "styled-components";
+
+const ContinueButton = styled.button`
+  background-color: #fc8019;
+  color: #ffffff;
+  width: 362px;
+  height: 50px;
+  padding: 0 28px;
+  font-size: 14px;
+  border: none;
+  font-weight: bold;
+`;
+
+const Image = styled.img`
+  height: 100px;
+  width: 105px;
+`;
+
+const Referral = styled.p`
+  color: #5d8ed5;
+  font-weight: bold;
+  cursor: pointer;
+`;
+
+const LoginLink = styled.span`
+  color: #fc8019;
+  font-weight: bold;
+  cursor: pointer;
+`;
+
+const inputStyle = {
+  width: "362px",
+  height: "72px",
+  padding: "0 28px",
+  fontSize: "17px",
+};
 
 const Signup = ({ onClose, visible }) => {
   return (
@@ -17,94 +53,28 @@ const Signup = ({ onClose, visible }) => {
             <div className="col-6">
               <h2>Sign up</h2>
               <div>
-                or{" "}
-                <span
-                  style={{
-                    color: "#FC8019",
-                    fontWeight: "bold",
-                    cursor: "pointer",
-                  }}
-                >
-                  login to your account
-                </span>
+                or <LoginLink>login to your account</LoginLink>
               </div>
             </div>
             <div className="col-6">
-              <img
-                src={SignupImage}
-                style={{ height: "100px", width: "105px" }}
-              />
+              <Image src={SignupImage} />
             </div>
           </div>
           <Form className="mt-5" layout="vertical">
             <Form.Item noStyle="true">
-              <Input
-                placeholder="Phone number"
-                style={{
-                  width: "362px",
-                  height: "72px",
-                  padding: "0 28px",
-                  fontSize: "17px",
-                }}
-              />
+              <Input placeholder="Phone number" style={inputStyle} />
             </Form.Item>
             <Form.Item noStyle="true">
-              <Input
-                placeholder="Name"
-                style={{
-                  width: "362px",
-                  height: "72px",
-                  padding: "0 28px",
-                  fontSize: "17px",
-                }}
-              />
+              <Input placeholder="Name" style={inputStyle} />
             </Form.Item>
             <Form.Item noStyle="true">
-              <Input
-                placeholder="Email"
-                type="email"
-                style={{
-                  width: "362px",
-                  height: "72px",
-                  padding: "0 28px",
-                  fontSize: "17px",
-                }}
-              />
+              <Input placeholder="Email" type="email" style={inputStyle} />
             </Form.Item>
             <Form.Item>
-              <Input.Password
-                placeholder="Password"
-                style={{
-                  width: "362px",
-                  height: "72px",
-                  padding: "0 28px",
-                  fontSize: "17px",
-                }}
-              />
+              <Input.Password placeholder="Password" style={inputStyle} />
             </Form.Item>
-            <p
-              style={{
-                color: "#5d8ed5",
-                fontWeight: "bold",
-                cursor: "pointer",
-              }}
-            >
-              Have a referral code ?
-            </p>
-            <button
-              style={{
-                backgroundColor: "#fc8019",
-                color: "#ffffff",
-                width: "362px",
-                height: "50px",
-                padding: "0 28px",
-                fontSize: "14px",
-                border: "none",
-                fontWeight: "bold",
-              }}
-            >
-              CONTINUE
-            </button>
+            <Referral>Have a referral code ?</Referral>
+            <ContinueButton>CONTINUE</ContinueButton>
           </Form>
         </div>
       </Drawer>

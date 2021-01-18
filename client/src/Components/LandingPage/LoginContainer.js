@@ -1,6 +1,36 @@
 import React from "react";
 import { Input, Drawer, Form } from "antd";
 import LoginImage from "./Images/Upper/login-image.png";
+import styled from "styled-components";
+
+const LoginButton = styled.button`
+  background-color: #fc8019;
+  color: #ffffff;
+  width: 362px;
+  height: 50px;
+  padding: 0 28px;
+  font-size: 14px;
+  border: none;
+  font-weight: bold;
+`;
+
+const SignupLink = styled.span`
+  color: #fc8019;
+  font-weight: bold;
+  cursor: pointer;
+`;
+
+const Image = styled.img`
+  height: 100px;
+  width: 105px;
+`;
+
+const inputStyle = {
+  width: "362px",
+  height: "72px",
+  padding: "0 28px",
+  fontSize: "17px",
+};
 
 const Login = ({ onClose, visible }) => {
   return (
@@ -17,51 +47,18 @@ const Login = ({ onClose, visible }) => {
             <div className="col-6">
               <h2>Login</h2>
               <div>
-                or{" "}
-                <span
-                  style={{
-                    color: "#FC8019",
-                    fontWeight: "bold",
-                    cursor: "pointer",
-                  }}
-                >
-                  create an account
-                </span>
+                or <SignupLink>create an account</SignupLink>
               </div>
             </div>
             <div className="col-6">
-              <img
-                src={LoginImage}
-                style={{ height: "100px", width: "105px" }}
-              />
+              <Image src={LoginImage} />
             </div>
           </div>
           <Form className="mt-5" layout="vertical">
             <Form.Item>
-              <Input
-                placeholder="Phone number"
-                style={{
-                  width: "362px",
-                  height: "72px",
-                  padding: "0 28px",
-                  fontSize: "17px",
-                }}
-              />
+              <Input placeholder="Phone number" style={inputStyle} />
             </Form.Item>
-            <button
-              style={{
-                backgroundColor: "#fc8019",
-                color: "#ffffff",
-                width: "362px",
-                height: "50px",
-                padding: "0 28px",
-                fontSize: "14px",
-                border: "none",
-                fontWeight: "bold",
-              }}
-            >
-              LOGIN
-            </button>
+            <LoginButton>LOGIN</LoginButton>
           </Form>
         </div>
       </Drawer>
