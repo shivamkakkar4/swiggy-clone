@@ -6,7 +6,6 @@ const userSchema = new Schema(
   {
     userId: { type: String, unique: true, required: true },
     email: { type: String, required: true, unique: true },
-    phoneNumber: {type: String, required: true, unique: true},
     active: { type: Boolean, default: false },
     password: { type: String, required: true },
     resetPasswordToken: { type: String, default: null },
@@ -32,11 +31,3 @@ module.exports.hashPassword = async (password) => {
   throw new Error("Hashing failed", error);
   }
   };
-
-module.exports.comparePasswords = async (password,userPassword) => {
-  try{
-    return await bcrypt.compare(password, userPassword);
-  } catch(error) {
-    throw new Error("Password does not match", error);
-  }
-};
