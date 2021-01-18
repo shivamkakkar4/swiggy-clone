@@ -31,3 +31,12 @@ module.exports.hashPassword = async (password) => {
   throw new Error("Hashing failed", error);
   }
   };
+
+  module.exports.comparePasswords = async (password,userPassword) => {
+    try{
+      return await bcrypt.compare(password,userPassword);
+    }
+    catch(error) {
+      throw new Error("Password does not match",error);
+    }
+  }
