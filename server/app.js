@@ -19,7 +19,8 @@ mongoose.connect(process.env.MONGO_URI, {
 const app = express();
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true })); //optional
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use("/users", require("./routes/user"));
 
 app.get("/ping", (req, res) => {
   return res.send({

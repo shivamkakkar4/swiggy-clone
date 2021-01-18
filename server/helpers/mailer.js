@@ -34,11 +34,15 @@ async function sendEmail(email, code) {
         user: smtpUsername,
         pass: smtpPassword,
       },
+      tls: 
+      {
+        rejectUnauthorized: false
+      }
     });
 
     // Specify the fields in the email.
     let mailOptions = {
-      from: senderAddress,
+      from: "shubhamkukreti321@gmail.com",
       to: toAddress,
       subject: subject,
       html: body_html,
