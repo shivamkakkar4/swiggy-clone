@@ -27,210 +27,41 @@ import Mobile1 from "./Images/Upper/Sec3_1.png";
 import Mobile2 from "./Images/Upper/Sec3_2.png";
 import PlayStore from "./Images/Upper/playStore.png";
 import AppStore from "./Images/Upper/appStore.png";
-import LoginImage from "./Images/Upper/login-image.png";
 import "antd/dist/antd.css";
-import { Input, Drawer, Button, Form } from "antd";
+import { Input } from "antd";
+import LoginContainer from "./LoginContainer";
+import SignupContainer from "./SignupContainer";
 
 const Upper = () => {
-  const [visible, setVisible] = useState(false);
-  const [visible2, setVisible2] = useState(false);
+  const [loginvisible, setLoginVisible] = useState(false);
+  const [signupvisible, setSignupVisible] = useState(false);
 
-  const showDrawer = () => {
-    setVisible(true);
+  const showLoginDrawer = () => {
+    setLoginVisible(true);
   };
-  const onClose = () => {
-    setVisible(false);
+  const onLoginClose = () => {
+    setLoginVisible(false);
   };
 
-  const showDrawer2 = () => {
-    setVisible2(true);
+  const showSignupDrawer = () => {
+    setSignupVisible(true);
   };
-  const onClose2 = () => {
-    setVisible2(false);
+  const onSignupClose = () => {
+    setSignupVisible(false);
   };
   return (
     <UpperContainer>
-      {/* ------------------------------------------------------------------------------------------------------- */}
-
-      {/* Login Component */}
-
-      <Drawer
-        placement="right"
-        width="580"
-        closable={true}
-        onClose={onClose}
-        visible={visible}
-      >
-        <div className="mt-4 p-3">
-          <div className="row">
-            <div className="col-6">
-              <h2>Login</h2>
-              <div>
-                or{" "}
-                <span
-                  style={{
-                    color: "#FC8019",
-                    fontWeight: "bold",
-                    cursor: "pointer",
-                  }}
-                >
-                  create an account
-                </span>
-              </div>
-            </div>
-            <div className="col-6">
-              <img
-                src={LoginImage}
-                style={{ height: "100px", width: "105px" }}
-              />
-            </div>
-          </div>
-          <Form className="mt-5" layout="vertical">
-            <Form.Item>
-              <Input
-                placeholder="Phone number"
-                style={{
-                  width: "362px",
-                  height: "72px",
-                  padding: "0 28px",
-                  fontSize: "17px",
-                }}
-              />
-            </Form.Item>
-            <button
-              style={{
-                backgroundColor: "#fc8019",
-                color: "#ffffff",
-                width: "362px",
-                height: "50px",
-                padding: "0 28px",
-                fontSize: "14px",
-                border: "none",
-                fontWeight: "bold",
-              }}
-            >
-              LOGIN
-            </button>
-          </Form>
-        </div>
-      </Drawer>
-
-      {/* Signup Component */}
-
-      <Drawer
-        placement="right"
-        width="580"
-        closable={true}
-        onClose={onClose2}
-        visible={visible2}
-      >
-        <div className="mt-4 p-3">
-          <div className="row">
-            <div className="col-6">
-              <h2>Sign up</h2>
-              <div>
-                or{" "}
-                <span
-                  style={{
-                    color: "#FC8019",
-                    fontWeight: "bold",
-                    cursor: "pointer",
-                  }}
-                >
-                  login to your account
-                </span>
-              </div>
-            </div>
-            <div className="col-6">
-              <img
-                src={LoginImage}
-                style={{ height: "100px", width: "105px" }}
-              />
-            </div>
-          </div>
-          <Form className="mt-5" layout="vertical">
-            <Form.Item noStyle="true">
-              <Input
-                placeholder="Phone number"
-                style={{
-                  width: "362px",
-                  height: "72px",
-                  padding: "0 28px",
-                  fontSize: "17px",
-                }}
-              />
-            </Form.Item>
-            <Form.Item noStyle="true">
-              <Input
-                placeholder="Name"
-                style={{
-                  width: "362px",
-                  height: "72px",
-                  padding: "0 28px",
-                  fontSize: "17px",
-                }}
-              />
-            </Form.Item>
-            <Form.Item noStyle="true">
-              <Input
-                placeholder="Email"
-                type="email"
-                style={{
-                  width: "362px",
-                  height: "72px",
-                  padding: "0 28px",
-                  fontSize: "17px",
-                }}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Input.Password
-                placeholder="Password"
-                style={{
-                  width: "362px",
-                  height: "72px",
-                  padding: "0 28px",
-                  fontSize: "17px",
-                }}
-              />
-            </Form.Item>
-            <p
-              style={{
-                color: "#5d8ed5",
-                fontWeight: "bold",
-                cursor: "pointer",
-              }}
-            >
-              Have a referral code ?
-            </p>
-            <button
-              style={{
-                backgroundColor: "#fc8019",
-                color: "#ffffff",
-                width: "362px",
-                height: "50px",
-                padding: "0 28px",
-                fontSize: "14px",
-                border: "none",
-                fontWeight: "bold",
-              }}
-            >
-              CONTINUE
-            </button>
-          </Form>
-        </div>
-      </Drawer>
-
-      {/* ------------------------------------------------------------------------------------------------------- */}
+      <LoginContainer onClose={onLoginClose} visible={loginvisible} />
+      <SignupContainer onClose={onSignupClose} visible={signupvisible} />
 
       <FirstSection className="row">
         <div className="col">
           <Container className="container">
             <Logo src={logo} />
-            <CustomButton background="#ffffff" black onClick={showDrawer}>
+            <CustomButton background="#ffffff" black onClick={showLoginDrawer}>
               Login
             </CustomButton>
-            <CustomButton background="#000000" onClick={showDrawer2}>
+            <CustomButton background="#000000" onClick={showSignupDrawer}>
               Sign up
             </CustomButton>
             <Title>Hungry ?</Title>
