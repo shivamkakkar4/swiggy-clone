@@ -3,7 +3,8 @@ require("dotenv").config();
 const { v4: uuid } = require("uuid");
 
 const { sendEmail } = require("./helpers/mailer");
-const { generateJwt } = require("./helpers/generateJWT")
+const { generateJwt } = require("./helpers/generateJWT");
+const { customAlphabet: generate } = require("nanoid");
 const User = require("./user/User");
 
 //Validate user schema
@@ -11,7 +12,16 @@ const userSchema = Joi.object().keys({
   email: Joi.string().email({ minDomainSegments: 2 }),
   password: Joi.string().required().min(4),
   confirmPassword: Joi.string().valid(Joi.ref("password")).required(),
+  phoneNumber: Joi.string().required().min(10),
+  referrer: Joi.string(),
 });
+
+const CHARACTER_SET =
+  "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+const REFERRAL_CODE_LENGTH = 8;
+
+const referralCode = generate(CHARACTER_SET, REFERRAL_CODE_LENGTH);
 
 exports.Signup = async (req, res) => {
   try {
@@ -59,12 +69,28 @@ exports.Signup = async (req, res) => {
     }
     result.value.emailToken = code;
     result.value.emailTokenExpires = new Date(expiry);
+
+     //Check if referred and validate code.
+     if (result.value.hasOwnProperty("referrer")) {
+      let referrer = await User.findOne({
+        referralCode: result.value.referrer,
+      });
+      if (!referrer) {
+        return res.status(400).send({
+          error: true,
+          message: "Invalid referral code.",
+        });
+      }
+    }
+    result.value.referralCode = referralCode();  //Generate referral code for the new user.
+
     const newUser = new User(result.value);
     await newUser.save();
 
     return res.status(200).json({
       success: true,
       message: "Registration Success",
+      referralCode: result.value.referralCode,
     });
   } catch (error) {
     console.error("signup-error", error);

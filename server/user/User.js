@@ -8,11 +8,14 @@ const userSchema = new Schema(
     email: { type: String, required: true, unique: true },
     active: { type: Boolean, default: false },
     password: { type: String, required: true },
+    phoneNumber: { type: String, required: true},
     resetPasswordToken: { type: String, default: null },
     resetPasswordExpires: { type: Date, default: null },
     emailToken: { type: String, default: null },
     emailTokenExpires: { type: Date, default: null },
     accessToken: { type: String, default: null },
+    referralCode: { type: String, unique: true },
+    referrer: { type: String, default: null }
   },
   {
     timestamps: {
@@ -33,13 +36,11 @@ module.exports.hashPassword = async (password) => {
   }
   };
 
-  module.exports.comparePasswords = async (password,userPassword) => {
-    try{
-      return await bcrypt.compare(password,userPassword);
+  module.exports.comparePasswords = async (inputPassword, hashedPassword) => {
+    try {
+      return await bcrypt.compare(inputPassword, hashedPassword);
+    } catch (error) {
+      throw new Error("Comparison failed", error);
     }
-    catch(error) {
-      throw new Error("Password does not match",error);
-    }
-  }
+  };
 
-  
