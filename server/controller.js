@@ -3,6 +3,7 @@ require("dotenv").config();
 const { v4: uuid } = require("uuid");
 
 const { sendEmail } = require("./helpers/mailer");
+const { generateJwt } = require("./helpers/generateJWT")
 const User = require("./user/User");
 
 //Validate user schema
@@ -113,12 +114,24 @@ exports.Login = async (req, res) => {
         message: "Invalid credentials",
       });
     }
+
+     //Generate Access token
+     const { error, token } = await generateJwt(user.email, user.userId);
+     if (error) {
+       return res.status(500).json({
+         error: true,
+         message: "Couldn't create access token. Please try again later",
+       });
+     }
+     user.accessToken = token;
+
     await user.save();
     
     //Success
     return res.send({
       success: true,
       message: "User logged in successfully",
+      accessToken: user.accessToken,
      });
   } catch (err) {
     console.error("Login error", err);
