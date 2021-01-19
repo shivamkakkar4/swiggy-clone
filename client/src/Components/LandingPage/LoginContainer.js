@@ -1,5 +1,7 @@
 import React from "react";
 import { Input, Drawer, Form } from "antd";
+import { connect } from "react-redux";
+import { hideLogin } from "../../redux/actions/actions";
 import LoginImage from "./Images/Upper/login-image.png";
 import styled from "styled-components";
 
@@ -32,15 +34,15 @@ const inputStyle = {
   fontSize: "17px",
 };
 
-const Login = ({ onClose, visible }) => {
+const Login = props => {
   return (
     <>
       <Drawer
         placement="right"
         width="580"
         closable={true}
-        onClose={onClose}
-        visible={visible}
+        onClose={props.hideLogin}
+        visible={props.visible}
       >
         <div className="mt-4 p-3">
           <div className="row">
@@ -66,4 +68,8 @@ const Login = ({ onClose, visible }) => {
   );
 };
 
-export default Login;
+const mapStateToProps = state => ({
+  visible: state.reducer.loginvisible,
+});
+
+export default connect(mapStateToProps, { hideLogin })(Login);
