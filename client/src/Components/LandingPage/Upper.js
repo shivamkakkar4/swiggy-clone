@@ -1,5 +1,6 @@
-/* eslint-disable jsx-a11y/alt-text */
 import React, { useState } from "react";
+import { connect } from "react-redux";
+import { showLogin, showSignup } from "../../redux/actions/actions";
 import {
   UpperContainer,
   Container,
@@ -33,27 +34,21 @@ import { Input } from "antd";
 import LoginContainer from "./LoginContainer";
 import SignupContainer from "./SignupContainer";
 
-const Upper = () => {
+const Upper = props => {
   const [loginvisible, setLoginVisible] = useState(false);
   const [signupvisible, setSignupVisible] = useState(false);
 
   const showLoginDrawer = () => {
-    setLoginVisible(true);
+    props.showLogin();
   };
-  const onLoginClose = () => {
-    setLoginVisible(false);
+  const showSignupDrawer = () => {
+    props.showSignup();
   };
 
-  const showSignupDrawer = () => {
-    setSignupVisible(true);
-  };
-  const onSignupClose = () => {
-    setSignupVisible(false);
-  };
   return (
     <UpperContainer>
-      <LoginContainer onClose={onLoginClose} visible={loginvisible} />
-      <SignupContainer onClose={onSignupClose} visible={signupvisible} />
+      <LoginContainer />
+      <SignupContainer />
 
       <FirstSection className="row">
         <div className="col">
@@ -202,4 +197,4 @@ const Upper = () => {
   );
 };
 
-export default Upper;
+export default connect(null, { showLogin, showSignup })(Upper);
