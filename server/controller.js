@@ -4,6 +4,7 @@ const { v4: uuid } = require("uuid");
 
 const { sendEmail } = require("./helpers/mailer");
 const { generateJwt } = require("./helpers/generateJWT");
+const { sendSMS } = require("./helpers/sms");
 const { customAlphabet: generate } = require("nanoid");
 const User = require("./user/User");
 
@@ -12,7 +13,7 @@ const userSchema = Joi.object().keys({
   email: Joi.string().email({ minDomainSegments: 2 }),
   password: Joi.string().required().min(4),
   confirmPassword: Joi.string().valid(Joi.ref("password")).required(),
-  phoneNumber: Joi.string().required().min(10),
+  phoneNumber: Joi.string().required(),
   referrer: Joi.string(),
 });
 
@@ -67,6 +68,16 @@ exports.Signup = async (req, res) => {
         message: "Couldn't send verification email.",
       });
     }
+
+    const sendSms = await sendSMS(result.value.phoneNumber,code);
+
+    if (sendSms.error) {
+      return res.status(500).json({
+        error: true,
+        message: "Couldn't send sms.",
+      });
+    }
+
     result.value.emailToken = code;
     result.value.emailTokenExpires = new Date(expiry);
 
