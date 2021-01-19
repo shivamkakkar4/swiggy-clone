@@ -34,10 +34,9 @@ async function sendEmail(email, code) {
         user: smtpUsername,
         pass: smtpPassword,
       },
-      tls: 
-      {
-        rejectUnauthorized: false
-      }
+      tls: {
+        rejectUnauthorized: false,
+      },
     });
 
     // Specify the fields in the email.

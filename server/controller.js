@@ -53,12 +53,12 @@ exports.Signup = async (req, res) => {
     const id = uuid(); //Generate unique id for the user.
     result.value.userId = id;
 
-   //remove the confirmPassword field from the result as we dont need to save this in the db.
-   delete result.value.confirmPassword;
-   result.value.password = hash;
+    //remove the confirmPassword field from the result as we dont need to save this in the db.
+    delete result.value.confirmPassword;
+    result.value.password = hash;
 
-    let code = Math.floor(100000 + Math.random() * 900000);  //Generate random 6 digit code.                             
-    let expiry = Date.now() + 60 * 1000 * 15;  //Set expiry 15 mins ahead from now
+    let code = Math.floor(100000 + Math.random() * 900000); //Generate random 6 digit code.
+    let expiry = Date.now() + 60 * 1000 * 15; //Set expiry 15 mins ahead from now
 
     const sendCode = await sendEmail(result.value.email, code);
 
@@ -69,7 +69,7 @@ exports.Signup = async (req, res) => {
       });
     }
 
-    const sendSms = await sendSMS(result.value.phoneNumber,code);
+    const sendSms = await sendSMS(result.value.phoneNumber, code);
 
     if (sendSms.error) {
       return res.status(500).json({
@@ -81,8 +81,8 @@ exports.Signup = async (req, res) => {
     result.value.emailToken = code;
     result.value.emailTokenExpires = new Date(expiry);
 
-     //Check if referred and validate code.
-     if (result.value.hasOwnProperty("referrer")) {
+    //Check if referred and validate code.
+    if (result.value.hasOwnProperty("referrer")) {
       let referrer = await User.findOne({
         referralCode: result.value.referrer,
       });
@@ -93,7 +93,7 @@ exports.Signup = async (req, res) => {
         });
       }
     }
-    result.value.referralCode = referralCode();  //Generate referral code for the new user.
+    result.value.referralCode = referralCode(); //Generate referral code for the new user.
 
     const newUser = new User(result.value);
     await newUser.save();
@@ -152,24 +152,24 @@ exports.Login = async (req, res) => {
       });
     }
 
-     //Generate Access token
-     const { error, token } = await generateJwt(user.email, user.userId);
-     if (error) {
-       return res.status(500).json({
-         error: true,
-         message: "Couldn't create access token. Please try again later",
-       });
-     }
-     user.accessToken = token;
+    //Generate Access token
+    const { error, token } = await generateJwt(user.email, user.userId);
+    if (error) {
+      return res.status(500).json({
+        error: true,
+        message: "Couldn't create access token. Please try again later",
+      });
+    }
+    user.accessToken = token;
 
     await user.save();
-    
+
     //Success
     return res.send({
       success: true,
       message: "User logged in successfully",
       accessToken: user.accessToken,
-     });
+    });
   } catch (err) {
     console.error("Login error", err);
     return res.status(500).json({
@@ -278,7 +278,6 @@ exports.ForgotPassword = async (req, res) => {
     });
   }
 };
-
 
 exports.ResetPassword = async (req, res) => {
   try {
