@@ -180,6 +180,120 @@ exports.Login = async (req, res) => {
   }
 };
 
+exports.LoginWithOTP = async (req,res) => {
+  try{
+    const {phoneNumber} = req.body;
+    if(!phoneNumber) {
+      return res.json({
+        error: true,
+        status: 400,
+        message: "cannot authorize user",
+      })
+    }
+    const user = await User.findOne({
+      phoneNumber: phoneNumber
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        error: true,
+        message: "Account not found",
+      });
+    }
+
+    
+    if (!user.activated) {
+      return res.status(400).json({
+        error: true,
+        message: "You must verify your email to activate your account",
+      });
+    }
+
+    let code = Math.floor(100000 + Math.random() * 900000); //Generate random 6 digit code.
+    let expiry = Date.now() + 60 * 1000 * 10; 
+
+    const sendSms = await sendSMS(phoneNumber, code);
+
+    if (sendSms.error) {
+      return res.status(500).json({
+        error: true,
+        message: "Couldn't send sms.",
+      });
+    }
+
+    user.loginOTP = code;
+    user.loginOTPExpires = new Date(expiry);
+
+    await user.save();
+
+    return res.send({
+      success: true,
+      message:
+        "OTP send successfully and activated for next 10 mins",
+    });
+
+  } catch(err) {
+    console.error("LoginWithOTP error", err);
+    return res.status(500).json({
+      error: true,
+      message: "Couldn't login. Please try again later.",
+    });
+  }
+}
+
+exports.CheckOTP = async (req, res) => {
+  try {
+    const { phoneNumber, otp } = req.body;
+    if(!phoneNumber || !otp) {
+      return res.json({
+        error: true,
+        status: 400,
+        message: "Please make a valid request",
+      });
+    } 
+
+    const user = await User.findOne({
+      phoneNumber : phoneNumber,
+      loginOTP : otp,
+      loginOTPExpires : { $gt: Date.now() },  
+    });
+
+    if (!user) {
+      return res.status(400).json({
+        error: true,
+        message: "Invalid Details"
+      })
+    }
+
+    const { error, token } = await generateJwt(user.email, user.userId);
+    if (error) {
+      return res.status(500).json({
+        error: true,
+        message: "Couldn't create access token. Please try again later",
+      });
+    }
+    user.accessToken = token;
+
+    user.loginOTP = "";
+    user.loginOTPExpires = null;
+
+    await user.save();
+
+    return res.send({
+      success: true,
+      message: "User logged in successfully",
+      accessToken: user.accessToken,
+    });
+  } catch (err) {
+    console.error("CheckOTP error", err);
+    return res.status(500).json({
+      error: true,
+      message: "Couldn't login. Please try again later.",
+    });
+    
+  }
+}
+
 exports.Activate = async (req, res) => {
   try {
     const { email, code } = req.body;
@@ -202,7 +316,7 @@ exports.Activate = async (req, res) => {
         message: "Invalid details",
       });
     } else {
-      if (user.actived)
+      if (user.activated)
         return res.send({
           error: true,
           message: "Account already activated",
@@ -211,7 +325,7 @@ exports.Activate = async (req, res) => {
 
       user.emailToken = "";
       user.emailTokenExpires = null;
-      user.actived = true;
+      user.activated = true;
 
       await user.save();
 
