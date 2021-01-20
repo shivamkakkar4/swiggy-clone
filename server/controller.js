@@ -6,7 +6,8 @@ const { sendEmail } = require("./helpers/mailer");
 const { generateJwt } = require("./helpers/generateJWT");
 const { sendSMS } = require("./helpers/sms");
 const { customAlphabet: generate } = require("nanoid");
-const User = require("./user/User");
+const User = require("./schema/User");
+const { hashPassword,comparePasswords } = require("./helpers/extras")
 
 //Validate user schema
 const userSchema = Joi.object().keys({
@@ -48,7 +49,7 @@ exports.Signup = async (req, res) => {
       });
     }
 
-    const hash = await User.hashPassword(result.value.password);
+    const hash = await hashPassword(result.value.password);
 
     const id = uuid(); //Generate unique id for the user.
     result.value.userId = id;
@@ -143,7 +144,7 @@ exports.Login = async (req, res) => {
     }
 
     //3. Verify the password is valid
-    const isValid = await User.comparePasswords(password, user.password);
+    const isValid = await comparePasswords(password, user.password);
 
     if (!isValid) {
       return res.status(400).json({
@@ -201,7 +202,7 @@ exports.Activate = async (req, res) => {
         message: "Invalid details",
       });
     } else {
-      if (user.active)
+      if (user.actived)
         return res.send({
           error: true,
           message: "Account already activated",
@@ -210,7 +211,7 @@ exports.Activate = async (req, res) => {
 
       user.emailToken = "";
       user.emailTokenExpires = null;
-      user.active = true;
+      user.actived = true;
 
       await user.save();
 
