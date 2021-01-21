@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Input, Drawer, Form } from "antd";
+import "antd/dist/antd.css";
 import { connect } from "react-redux";
-import { hideLogin } from "../../redux/actions/actions";
+import { hideLogin, showSignup } from "../../redux/actions/actions";
 import LoginImage from "./Images/Upper/login-image.png";
 import styled from "styled-components";
 
@@ -35,32 +36,110 @@ const inputStyle = {
 };
 
 const Login = props => {
+  const [form] = Form.useForm();
+  const [form2] = Form.useForm();
+
+  const nextForm = e => {
+    document.getElementById("loginForm1").style.display = "none";
+    document.getElementById("loginForm2").style.display = "block";
+    form2.setFieldsValue({
+      Phone: phoneNumber,
+    });
+  };
+  const revert = () => {
+    document.getElementById("loginForm1").style.display = "block";
+    document.getElementById("loginForm2").style.display = "none";
+  };
+  const [phoneNumber, setPhoneNumber] = useState(0);
+  const change = e => {
+    setPhoneNumber(e.target.value);
+  };
+
+  useEffect(() => {
+    console.log(phoneNumber);
+  });
+
   return (
     <>
       <Drawer
         placement="right"
         width="580"
         closable={true}
-        onClose={props.hideLogin}
+        onClose={() => {
+          props.hideLogin();
+          revert();
+        }}
         visible={props.visible}
       >
-        <div className="mt-4 p-3">
+        <div className="mt-4 p-3" id="loginForm1">
           <div className="row">
             <div className="col-6">
               <h2>Login</h2>
               <div>
-                or <SignupLink>create an account</SignupLink>
+                or{" "}
+                <SignupLink>
+                  <a
+                    onClick={() => {
+                      props.hideLogin();
+                      props.showSignup();
+                    }}
+                  >
+                    create an account
+                  </a>
+                </SignupLink>
               </div>
             </div>
             <div className="col-6">
               <Image src={LoginImage} />
             </div>
           </div>
-          <Form className="mt-5" layout="vertical">
-            <Form.Item>
-              <Input placeholder="Phone number" style={inputStyle} />
+          <Form
+            className="mt-5"
+            layout="vertical"
+            form={form}
+            name="control-hooks"
+            onFinish={nextForm}
+          >
+            <Form.Item
+              name="Phone"
+              rules={[{ required: true, message: "Enter your phone number" }]}
+            >
+              <Input
+                className="no-arrow"
+                onChange={change}
+                type="number"
+                placeholder="Phone number"
+                style={inputStyle}
+              />
             </Form.Item>
-            <LoginButton>LOGIN</LoginButton>
+            <Form.Item>
+              <LoginButton id="loginButton" type="submit">
+                LOGIN
+              </LoginButton>
+            </Form.Item>
+          </Form>
+        </div>
+
+        <div className="mt-4 p-3" id="loginForm2" style={{ display: "none" }}>
+          <div className="row">
+            <div className="col-6">
+              <h2>Enter OTP</h2>
+              <p>We've sent an OTP to your phone number.</p>
+            </div>
+            <div className="col-6">
+              <Image src={LoginImage} />
+            </div>
+          </div>
+          <Form className="mt-5" layout="vertical" form={form2}>
+            <Form.Item name="Phone">
+              <Input placeholder="Phone number" style={inputStyle} readOnly />
+            </Form.Item>
+            <Form.Item>
+              <Input placeholder="One time password" style={inputStyle} />
+            </Form.Item>
+            <Form.Item>
+              <LoginButton id="verifyButton">Verify OTP</LoginButton>
+            </Form.Item>
           </Form>
         </div>
       </Drawer>
@@ -72,4 +151,4 @@ const mapStateToProps = state => ({
   visible: state.reducer.loginvisible,
 });
 
-export default connect(mapStateToProps, { hideLogin })(Login);
+export default connect(mapStateToProps, { hideLogin, showSignup })(Login);

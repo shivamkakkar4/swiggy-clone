@@ -35,9 +35,6 @@ import LoginContainer from "./LoginContainer";
 import SignupContainer from "./SignupContainer";
 
 const Upper = props => {
-  const [loginvisible, setLoginVisible] = useState(false);
-  const [signupvisible, setSignupVisible] = useState(false);
-
   const showLoginDrawer = () => {
     props.showLogin();
   };
