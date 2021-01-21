@@ -75,9 +75,17 @@ const Signup = props => {
         alert("something has went wrong");
       });
   };
+
+  const otpForm = () => {
+    axios.post("http://localhost:8080/http://localhost:5000/users/signup");
+  };
+
+  //KUKRETI YHAAN PE AXIOS CALL DAAL
   const revert = () => {
     document.getElementById("signupForm1").style.display = "block";
     document.getElementById("signupForm2").style.display = "none";
+    document.getElementById("referralInput").style.display = "none";
+    document.getElementById("referral").style.display = "block";
   };
 
   const showReferral = () => {
@@ -300,7 +308,12 @@ const Signup = props => {
               <Image src={SignupImage} />
             </div>
           </div>
-          <Form className="mt-5" layout="vertical" form={form2}>
+          <Form
+            className="mt-5"
+            layout="vertical"
+            form={form2}
+            onFinish={otpForm}
+          >
             <Form.Item name="Phone">
               <Input placeholder="Phone number" style={inputStyle} readOnly />
             </Form.Item>
