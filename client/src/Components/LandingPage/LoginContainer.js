@@ -68,6 +68,8 @@ const Login = props => {
         onClose={() => {
           props.hideLogin();
           revert();
+          form.resetFields();
+          form2.resetFields();
         }}
         visible={props.visible}
       >
