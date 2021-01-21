@@ -7,12 +7,13 @@ const { generateJwt } = require("./helpers/generateJWT");
 const { sendSMS } = require("./helpers/sms");
 const { customAlphabet: generate } = require("nanoid");
 const User = require("./schema/User");
-const { hashPassword,comparePasswords } = require("./helpers/extras")
+const { hashPassword, comparePasswords } = require("./helpers/extras");
 
 //Validate user schema
 const userSchema = Joi.object().keys({
+  name: Joi.string(),
   email: Joi.string().email({ minDomainSegments: 2 }),
-  password: Joi.string().required().min(4),
+  password: Joi.string().required().min(6),
   confirmPassword: Joi.string().valid(Joi.ref("password")).required(),
   phoneNumber: Joi.string().required(),
   referrer: Joi.string(),
@@ -34,6 +35,17 @@ exports.Signup = async (req, res) => {
         error: true,
         status: 400,
         message: result.error.message,
+      });
+    }
+
+    //Check if the Phone number has been already registered.
+    var userPhone = await User.findOne({
+      phoneNumber: result.value.phoneNumber,
+    });
+    if (userPhone) {
+      return res.json({
+        error: true,
+        message: "Phone Number is already in use",
       });
     }
 
@@ -180,28 +192,27 @@ exports.Login = async (req, res) => {
   }
 };
 
-exports.LoginWithOTP = async (req,res) => {
-  try{
-    const {phoneNumber} = req.body;
-    if(!phoneNumber) {
+exports.LoginWithOTP = async (req, res) => {
+  try {
+    const { phoneNumber } = req.body;
+    if (!phoneNumber) {
       return res.json({
         error: true,
         status: 400,
         message: "cannot authorize user",
-      })
+      });
     }
     const user = await User.findOne({
-      phoneNumber: phoneNumber
+      phoneNumber: phoneNumber,
     });
 
     if (!user) {
-      return res.status(404).json({
+      return res.json({
         error: true,
         message: "Account not found",
       });
     }
 
-    
     if (!user.activated) {
       return res.status(400).json({
         error: true,
@@ -210,7 +221,7 @@ exports.LoginWithOTP = async (req,res) => {
     }
 
     let code = Math.floor(100000 + Math.random() * 900000); //Generate random 6 digit code.
-    let expiry = Date.now() + 60 * 1000 * 10; 
+    let expiry = Date.now() + 60 * 1000 * 10;
 
     const sendSms = await sendSMS(phoneNumber, code);
 
@@ -228,41 +239,39 @@ exports.LoginWithOTP = async (req,res) => {
 
     return res.send({
       success: true,
-      message:
-        "OTP send successfully and activated for next 10 mins",
+      message: "OTP send successfully and activated for next 10 mins",
     });
-
-  } catch(err) {
+  } catch (err) {
     console.error("LoginWithOTP error", err);
     return res.status(500).json({
       error: true,
       message: "Couldn't login. Please try again later.",
     });
   }
-}
+};
 
 exports.CheckOTP = async (req, res) => {
   try {
     const { phoneNumber, otp } = req.body;
-    if(!phoneNumber || !otp) {
+    if (!phoneNumber || !otp) {
       return res.json({
         error: true,
         status: 400,
         message: "Please make a valid request",
       });
-    } 
+    }
 
     const user = await User.findOne({
-      phoneNumber : phoneNumber,
-      loginOTP : otp,
-      loginOTPExpires : { $gt: Date.now() },  
+      phoneNumber: phoneNumber,
+      loginOTP: otp,
+      loginOTPExpires: { $gt: Date.now() },
     });
 
     if (!user) {
       return res.status(400).json({
         error: true,
-        message: "Invalid Details"
-      })
+        message: "Invalid Details",
+      });
     }
 
     const { error, token } = await generateJwt(user.email, user.userId);
@@ -290,9 +299,8 @@ exports.CheckOTP = async (req, res) => {
       error: true,
       message: "Couldn't login. Please try again later.",
     });
-    
   }
-}
+};
 
 exports.Activate = async (req, res) => {
   try {

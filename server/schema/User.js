@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-
 const userSchema = new Schema(
   {
     userId: { type: String, unique: true, required: true },
+    name: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     activated: { type: Boolean, default: false },
     password: { type: String, required: true },
@@ -13,8 +13,8 @@ const userSchema = new Schema(
     resetPasswordExpires: { type: Date, default: null },
     emailToken: { type: String, default: null },
     emailTokenExpires: { type: Date, default: null },
-    loginOTP: {type: String, default: null},
-    loginOTPExpires: { type: Date, default: null},
+    loginOTP: { type: String, default: null },
+    loginOTPExpires: { type: Date, default: null },
     accessToken: { type: String, default: null },
     referralCode: { type: String, unique: true },
     referrer: { type: String, default: null },
@@ -28,5 +28,3 @@ const userSchema = new Schema(
 );
 const User = mongoose.model("user", userSchema);
 module.exports = User;
-
-

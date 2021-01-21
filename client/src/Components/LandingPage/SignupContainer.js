@@ -50,8 +50,10 @@ const Signup = props => {
     axios
       .post("http://localhost:8080/http://localhost:5000/users/signup", {
         phoneNumber: phoneNumber,
+        name: name,
         email: email,
         password: password,
+        confirmPassword: confirmPassword,
       })
       .then(result => {
         if (
@@ -87,6 +89,7 @@ const Signup = props => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [referral, setReferral] = useState("");
   const [otp, setOtp] = useState(0);
 
@@ -101,6 +104,9 @@ const Signup = props => {
   };
   const passwordChange = e => {
     setPassword(e.target.value);
+  };
+  const confirmPasswordChange = e => {
+    setConfirmPassword(e.target.value);
   };
   const referralChange = e => {
     setReferral(e.target.value);
@@ -210,10 +216,44 @@ const Signup = props => {
                   message: "Please input your password!",
                 },
               ]}
+              hasFeedback
             >
               <Input.Password
                 onChange={passwordChange}
                 placeholder="Password"
+                style={inputStyle}
+              />
+            </Form.Item>
+            <Form.Item
+              name="Confirm"
+              dependencies={["Password"]}
+              hasFeedback
+              minLength="6"
+              rules={[
+                {
+                  minLength: "6",
+                  message: "Password should be minimum 6 characters",
+                },
+                {
+                  required: true,
+                  message: "Please confirm your password!",
+                },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue("Password") === value) {
+                      return Promise.resolve();
+                    }
+
+                    return Promise.reject(
+                      "The two passwords that you entered do not match!"
+                    );
+                  },
+                }),
+              ]}
+            >
+              <Input.Password
+                onChange={confirmPasswordChange}
+                placeholder="Confirm Password"
                 style={inputStyle}
               />
             </Form.Item>
