@@ -63,9 +63,31 @@ const Signup = props => {
   };
 
   const [phoneNumber, setPhoneNumber] = useState(0);
-  const change = e => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [referral, setReferral] = useState("");
+  const [otp, setOtp] = useState(0);
+
+  const phoneChange = e => {
     setPhoneNumber(e.target.value);
   };
+  const nameChange = e => {
+    setName(e.target.value);
+  };
+  const emailChange = e => {
+    setEmail(e.target.value);
+  };
+  const passwordChange = e => {
+    setPassword(e.target.value);
+  };
+  const referralChange = e => {
+    setReferral(e.target.value);
+  };
+  const otpChange = e => {
+    setOtp(e.target.value);
+  };
+
   return (
     <>
       <Drawer
@@ -117,7 +139,7 @@ const Signup = props => {
             >
               <Input
                 className="no-arrow"
-                onChange={change}
+                onChange={phoneChange}
                 type="number"
                 placeholder="Phone number"
                 style={inputStyle}
@@ -128,7 +150,11 @@ const Signup = props => {
               //  noStyle="true"
               rules={[{ required: true, message: "Enter your Name" }]}
             >
-              <Input placeholder="Name" style={inputStyle} />
+              <Input
+                onChange={nameChange}
+                placeholder="Name"
+                style={inputStyle}
+              />
             </Form.Item>
             <Form.Item
               // noStyle="true"
@@ -144,7 +170,11 @@ const Signup = props => {
                 },
               ]}
             >
-              <Input placeholder="Email" style={inputStyle} />
+              <Input
+                onChange={emailChange}
+                placeholder="Email"
+                style={inputStyle}
+              />
             </Form.Item>
             <Form.Item
               name="Password"
@@ -160,7 +190,11 @@ const Signup = props => {
                 },
               ]}
             >
-              <Input.Password placeholder="Password" style={inputStyle} />
+              <Input.Password
+                onChange={passwordChange}
+                placeholder="Password"
+                style={inputStyle}
+              />
             </Form.Item>
             <Referral id="referral">
               <a onClick={showReferral}>Have a referral code ?</a>
@@ -170,7 +204,11 @@ const Signup = props => {
                 // noStyle="true"
                 name="ReferralCode"
               >
-                <Input placeholder="Referral Code" style={inputStyle} />
+                <Input
+                  onChange={referralChange}
+                  placeholder="Referral Code"
+                  style={inputStyle}
+                />
               </Form.Item>
             </div>
             <ContinueButton type="submit" id="continueButton">
@@ -207,7 +245,11 @@ const Signup = props => {
             </Form.Item>
             <div>
               <Form.Item>
-                <Input placeholder="One time password" style={inputStyle} />
+                <Input
+                  onChange={otpChange}
+                  placeholder="One time password"
+                  style={inputStyle}
+                />
               </Form.Item>
             </div>
             <ContinueButton>Verify OTP</ContinueButton>
