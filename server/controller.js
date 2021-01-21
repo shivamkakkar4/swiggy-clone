@@ -439,3 +439,45 @@ exports.ResetPassword = async (req, res) => {
     });
   }
 };
+
+exports.ReferredAccounts = async (req, res) => {
+  try {
+    const { referralCode } = req.decoded; //Destruction syntax
+
+    const referredAccounts = await User.find(
+      { referrer: referralCode },
+      { email: 1, referralCode: 1, _id: 0 }
+    );
+    return res.send({
+      success: true,
+      accounts: referredAccounts,
+      total: referredAccounts.length,
+    });
+  } catch (error) {
+    console.error("fetch-referred-error", error);
+    return res.stat(500).json({
+      error: true,
+      message: error.message,
+    });
+  }
+};
+
+exports.Logout = async (req, res) => {
+  try {
+    const { id } = req.decoded;
+
+    let user = await User.findOne({ userId: id });
+
+    user.accessToken = "";
+
+    await user.save();
+
+    return res.send({ success: true, message: "User Logged out" });
+  } catch (error) {
+    console.error("user-logout-error", error);
+    return res.stat(500).json({
+      error: true,
+      message: error.message,
+    });
+  }
+};
