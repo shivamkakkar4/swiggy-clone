@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { hideLogin, showSignup } from "../../redux/actions/actions";
 import LoginImage from "./Images/Upper/login-image.png";
 import styled from "styled-components";
+import axios from "axios";
 
 const LoginButton = styled.button`
   background-color: #fc8019;
@@ -40,11 +41,29 @@ const Login = props => {
   const [form2] = Form.useForm();
 
   const nextForm = e => {
-    document.getElementById("loginForm1").style.display = "none";
-    document.getElementById("loginForm2").style.display = "block";
-    form2.setFieldsValue({
-      Phone: phoneNumber,
-    });
+    axios
+      .post("http://localhost:8080/http://localhost:5000/users/loginOTP", {
+        phoneNumber: phoneNumber,
+      })
+      .then(result => {
+        if (
+          result.data.message === "Account not found" ||
+          result.data.message === "cannot authorize user"
+        ) {
+          alert("Account does not exist");
+        } else {
+          document.getElementById("loginForm1").style.display = "none";
+          document.getElementById("loginForm2").style.display = "block";
+          form2.setFieldsValue({
+            Phone: phoneNumber,
+          });
+          console.log("working");
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        alert("something has went wrong");
+      });
   };
   const revert = () => {
     document.getElementById("loginForm1").style.display = "block";
