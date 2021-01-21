@@ -51,8 +51,13 @@ const Login = props => {
     document.getElementById("loginForm2").style.display = "none";
   };
   const [phoneNumber, setPhoneNumber] = useState(0);
-  const change = e => {
+  const [otp, setOtp] = useState(0);
+
+  const phoneChange = e => {
     setPhoneNumber(e.target.value);
+  };
+  const otpChange = e => {
+    setOtp(e.target.value);
   };
 
   useEffect(() => {
@@ -108,7 +113,7 @@ const Login = props => {
             >
               <Input
                 className="no-arrow"
-                onChange={change}
+                onChange={phoneChange}
                 type="number"
                 placeholder="Phone number"
                 style={inputStyle}
@@ -140,7 +145,9 @@ const Login = props => {
               <Input placeholder="One time password" style={inputStyle} />
             </Form.Item>
             <Form.Item>
-              <LoginButton id="verifyButton">Verify OTP</LoginButton>
+              <LoginButton onChange={otpChange} id="verifyButton">
+                Verify OTP
+              </LoginButton>
             </Form.Item>
           </Form>
         </div>
