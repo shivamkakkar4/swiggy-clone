@@ -54,6 +54,7 @@ const Signup = (props) => {
         email: email,
         password: password,
         confirmPassword: confirmPassword,
+        referrer: referrer,
       })
       .then((result) => {
         if (result.data.error) {
@@ -119,7 +120,7 @@ const Signup = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [referrer, setReferrer] = useState("");
+  const [referrer, setReferrer] = useState("swiggy");
   const [otp, setOtp] = useState("");
   const [code, setCode] = useState("");
   const [codeExpires, setCodeExpires] = useState("");

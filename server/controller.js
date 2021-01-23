@@ -16,7 +16,7 @@ const userSchema = Joi.object().keys({
   password: Joi.string().required().min(6),
   confirmPassword: Joi.string().valid(Joi.ref("password")).required(),
   phoneNumber: Joi.string().required(),
-  referrer: Joi.string(),
+  // referrer: Joi.string(),
 });
 
 const CHARACTER_SET =
@@ -87,7 +87,7 @@ exports.Signup = async (req, res) => {
     // result.value.emailTokenExpires = new Date(expiry);
 
     //Check if referred and validate code.
-    if (result.value.hasOwnProperty()) {
+    if (result.value.referrer != "swiggy") {
       let referrer = await User.findOne({
         referralCode: result.value.referrer,
       });
@@ -101,7 +101,7 @@ exports.Signup = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "Registration Success",
+      message: "Otp send to your Mail and Phone Number Succesfully",
       code: code,
       codeExpires: new Date(expiry),
       referralCode: result.value.referralCode,
@@ -117,12 +117,17 @@ exports.Signup = async (req, res) => {
 
 exports.Activate = async (req, res) => {
   try {
-    const { email, code } = req.body;
+    // const { name, email, phoneNumber, password  } = req.body;
     
-    result.value.referralCode = referralCode(); //Generate referral code for the new user.
+    req.body.referralCode = referralCode(); //Generate referral code for the new user.
 
-    const newUser = new User(result.value);
+    const newUser = new User(req.body);
     await newUser.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Registration Successful",
+    });
   } catch (error) {
     console.error("activation-error", error);
     return res.status(500).json({
