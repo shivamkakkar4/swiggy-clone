@@ -78,9 +78,9 @@ const Signup = (props) => {
   };
 
   const otpForm = () => {
-    console.log(code)
+    // console.log(code)
     if (otp == code && Date.now() < new Date(codeExpires)) {
-    console.log('working')
+    // console.log('working')
     
       axios
         .post("http://localhost:8080/http://localhost:5000/users/activate", {
@@ -93,16 +93,20 @@ const Signup = (props) => {
           if (result.data.error) {
             alert(result.data.message);
           } else {
-            alert(result.data.messsage);
+            alert(result.data.message);
+            // console.log(result.data)
           }
         })
         .catch((error) => {
           console.log(error);
         });
     }
+
+    else {
+      alert('Enter a valid otp');
+    }
   };
 
-  //KUKRETI YHAAN PE AXIOS CALL DAAL
   const revert = () => {
     document.getElementById("signupForm1").style.display = "block";
     document.getElementById("signupForm2").style.display = "none";
