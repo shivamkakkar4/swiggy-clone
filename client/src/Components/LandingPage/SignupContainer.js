@@ -42,7 +42,7 @@ const inputStyle = {
   fontSize: "17px",
 };
 
-const Signup = props => {
+const Signup = (props) => {
   const [form] = Form.useForm();
   const [form2] = Form.useForm();
 
@@ -55,29 +55,50 @@ const Signup = props => {
         password: password,
         confirmPassword: confirmPassword,
       })
-      .then(result => {
-        if (
-          result.data.message === "Account not found" ||
-          result.data.message === "cannot authorize user"
-        ) {
-          alert("Account does not exist");
+      .then((result) => {
+        if (result.data.error) {
+          alert(result.data.message);
         } else {
+          // console.log(result.data)
+          console.log(result.data);
+          setCode(result.data.code);
+          setCodeExpires(result.data.codeExpires);
           document.getElementById("signupForm1").style.display = "none";
           document.getElementById("signupForm2").style.display = "block";
           form2.setFieldsValue({
             Phone: phoneNumber,
           });
-          console.log("working");
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
         alert("something has went wrong");
       });
   };
 
   const otpForm = () => {
-    axios.post("http://localhost:8080/http://localhost:5000/users/signup");
+    console.log(code)
+    if (otp == code && Date.now() < new Date(codeExpires)) {
+    console.log('working')
+    
+      axios
+        .post("http://localhost:8080/http://localhost:5000/users/activate", {
+          phoneNumber: phoneNumber,
+          name: name,
+          email: email,
+          password: password,
+        })
+        .then((result) => {
+          if (result.data.error) {
+            alert(result.data.message);
+          } else {
+            alert(result.data.message);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   //KUKRETI YHAAN PE AXIOS CALL DAAL
@@ -98,28 +119,30 @@ const Signup = props => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [referral, setReferral] = useState("");
-  const [otp, setOtp] = useState(0);
+  const [referrer, setReferrer] = useState("");
+  const [otp, setOtp] = useState("");
+  const [code, setCode] = useState("");
+  const [codeExpires, setCodeExpires] = useState("");
 
-  const phoneChange = e => {
+  const phoneChange = (e) => {
     setPhoneNumber(e.target.value);
   };
-  const nameChange = e => {
+  const nameChange = (e) => {
     setName(e.target.value);
   };
-  const emailChange = e => {
+  const emailChange = (e) => {
     setEmail(e.target.value);
   };
-  const passwordChange = e => {
+  const passwordChange = (e) => {
     setPassword(e.target.value);
   };
-  const confirmPasswordChange = e => {
+  const confirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
   };
-  const referralChange = e => {
-    setReferral(e.target.value);
+  const referrerChange = (e) => {
+    setReferrer(e.target.value);
   };
-  const otpChange = e => {
+  const otpChange = (e) => {
     setOtp(e.target.value);
   };
 
@@ -274,7 +297,7 @@ const Signup = props => {
                 name="ReferralCode"
               >
                 <Input
-                  onChange={referralChange}
+                  onChange={referrerChange}
                   placeholder="Referral Code"
                   style={inputStyle}
                 />
@@ -334,7 +357,7 @@ const Signup = props => {
   );
 };
 
-const matchStateToProps = state => ({
+const matchStateToProps = (state) => ({
   visible: state.reducer.signupvisible,
 });
 

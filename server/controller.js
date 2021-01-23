@@ -28,6 +28,7 @@ const referralCode = generate(CHARACTER_SET, REFERRAL_CODE_LENGTH);
 
 exports.Signup = async (req, res) => {
   try {
+    console.log("working")
     const result = userSchema.validate(req.body);
     if (result.error) {
       console.log(result.error.message);
@@ -61,17 +62,8 @@ exports.Signup = async (req, res) => {
       });
     }
 
-    const hash = await hashPassword(result.value.password);
-
-    const id = uuid(); //Generate unique id for the user.
-    result.value.userId = id;
-
-    //remove the confirmPassword field from the result as we dont need to save this in the db.
-    delete result.value.confirmPassword;
-    result.value.password = hash;
-
     let code = Math.floor(100000 + Math.random() * 900000); //Generate random 6 digit code.
-    let expiry = Date.now() + 60 * 1000 * 15; //Set expiry 15 mins ahead from now
+    let expiry = Date.now() + 60 * 1000 * 10;
 
     const sendCode = await sendEmail(result.value.email, code);
 
@@ -90,12 +82,12 @@ exports.Signup = async (req, res) => {
         message: "Couldn't send sms.",
       });
     }
-
-    result.value.emailToken = code;
-    result.value.emailTokenExpires = new Date(expiry);
+    
+    // result.value.emailToken = code;
+    // result.value.emailTokenExpires = new Date(expiry);
 
     //Check if referred and validate code.
-    if (result.value.hasOwnProperty("referrer")) {
+    if (result.value.hasOwnProperty()) {
       let referrer = await User.findOne({
         referralCode: result.value.referrer,
       });
@@ -106,14 +98,12 @@ exports.Signup = async (req, res) => {
         });
       }
     }
-    result.value.referralCode = referralCode(); //Generate referral code for the new user.
-
-    const newUser = new User(result.value);
-    await newUser.save();
 
     return res.status(200).json({
       success: true,
       message: "Registration Success",
+      code: code,
+      codeExpires: new Date(expiry),
       referralCode: result.value.referralCode,
     });
   } catch (error) {
@@ -121,6 +111,23 @@ exports.Signup = async (req, res) => {
     return res.status(500).json({
       error: true,
       message: "Cannot Register",
+    });
+  }
+};
+
+exports.Activate = async (req, res) => {
+  try {
+    const { email, code } = req.body;
+    
+    result.value.referralCode = referralCode(); //Generate referral code for the new user.
+
+    const newUser = new User(result.value);
+    await newUser.save();
+  } catch (error) {
+    console.error("activation-error", error);
+    return res.status(500).json({
+      error: true,
+      message: error.message,
     });
   }
 };
@@ -298,55 +305,6 @@ exports.CheckOTP = async (req, res) => {
     return res.status(500).json({
       error: true,
       message: "Couldn't login. Please try again later.",
-    });
-  }
-};
-
-exports.Activate = async (req, res) => {
-  try {
-    const { email, code } = req.body;
-    if (!email || !code) {
-      return res.json({
-        error: true,
-        status: 400,
-        message: "Please make a valid request",
-      });
-    }
-    const user = await User.findOne({
-      email: email,
-      emailToken: code,
-      emailTokenExpires: { $gt: Date.now() }, // check if the code is expired
-    });
-
-    if (!user) {
-      return res.status(400).json({
-        error: true,
-        message: "Invalid details",
-      });
-    } else {
-      if (user.activated)
-        return res.send({
-          error: true,
-          message: "Account already activated",
-          status: 400,
-        });
-
-      user.emailToken = "";
-      user.emailTokenExpires = null;
-      user.activated = true;
-
-      await user.save();
-
-      return res.status(200).json({
-        success: true,
-        message: "Account activated.",
-      });
-    }
-  } catch (error) {
-    console.error("activation-error", error);
-    return res.status(500).json({
-      error: true,
-      message: error.message,
     });
   }
 };
