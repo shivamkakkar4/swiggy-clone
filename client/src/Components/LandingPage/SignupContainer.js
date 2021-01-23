@@ -93,7 +93,7 @@ const Signup = (props) => {
           if (result.data.error) {
             alert(result.data.message);
           } else {
-            alert(result.data.message);
+            alert(result.data.messsage);
           }
         })
         .catch((error) => {

@@ -16,7 +16,7 @@ const userSchema = Joi.object().keys({
   password: Joi.string().required().min(6),
   confirmPassword: Joi.string().valid(Joi.ref("password")).required(),
   phoneNumber: Joi.string().required(),
-  // referrer: Joi.string(),
+  referrer: Joi.string(),
 });
 
 const CHARACTER_SET =
@@ -127,6 +127,7 @@ exports.Activate = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Registration Successful",
+      user: newUser
     });
   } catch (error) {
     console.error("activation-error", error);
@@ -159,15 +160,7 @@ exports.Login = async (req, res) => {
       });
     }
 
-    //2. Throw error if account is not activated
-    if (!user.active) {
-      return res.status(400).json({
-        error: true,
-        message: "You must verify your email to activate your account",
-      });
-    }
-
-    //3. Verify the password is valid
+    //2. Verify the password is valid
     const isValid = await comparePasswords(password, user.password);
 
     if (!isValid) {
