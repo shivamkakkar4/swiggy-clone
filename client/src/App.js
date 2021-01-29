@@ -9,12 +9,10 @@ const App = () => {
   return (
     <Provider store={store}>
       <Router>
-        <div>
           <Switch>
             <Route exact path="/" component={LandingPage} />
             <Route exact path="/restaurants" component={Restaurants} />
           </Switch>
-        </div>
       </Router>
     </Provider>
   );

@@ -5,11 +5,11 @@ import RestaurantsList from "./RestaurantsList";
 
 const Restaurants = () => {
   return (
-    <div>
+    <>
       <Header />
-      <Middle />
+      {/* <Middle /> */}
       <RestaurantsList />
-    </div>
+    </>
   );
 };
 
