@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { showLogin, showSignup } from "../../redux/actions/actions";
+import { withRouter } from "react-router-dom";
 import {
   UpperContainer,
   Container,
@@ -9,6 +10,7 @@ import {
   SideImage,
   Title,
   Subtitle,
+  LocationButton,
   CustomButton,
   Subtitle2,
   UL,
@@ -29,6 +31,7 @@ import Mobile1 from "./Images/Upper/Sec3_1.png";
 import Mobile2 from "./Images/Upper/Sec3_2.png";
 import PlayStore from "./Images/Upper/playStore.png";
 import AppStore from "./Images/Upper/appStore.png";
+import LocationIcon from "./Images/Upper/locateMe.PNG";
 import "antd/dist/antd.css";
 import { Input } from "antd";
 import LoginContainer from "./LoginContainer";
@@ -41,6 +44,22 @@ const Upper = props => {
   const showSignupDrawer = () => {
     props.showSignup();
   };
+
+  const locate = () => {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      console.log("Latitude is :", position.coords.latitude);
+      console.log("Longitude is :", position.coords.longitude);
+    });
+  };
+
+  // useEffect(() => {
+  //   if ("geolocation" in navigator) {
+  //     props.history.push("./restaurants");
+  //     console.log(navigator);
+  //   } else {
+  //     console.log("Not Available");
+  //   }
+  // }, []);
 
   return (
     <UpperContainer>
@@ -68,7 +87,15 @@ const Upper = props => {
                   border: "1px solid #fc8019",
                 }}
                 placeholder="Enter your delivery location"
+                suffix={
+                  <a onClick={locate} style={{ border: "none" }}>
+                    <LocationButton src={LocationIcon} />
+                  </a>
+                }
               />
+              {/* <CustomButton large background="blue" onClick={locate}>
+                Locate
+              </CustomButton> */}
               <CustomButton large background="#fc8019">
                 FIND FOOD
               </CustomButton>
@@ -194,4 +221,4 @@ const Upper = props => {
   );
 };
 
-export default connect(null, { showLogin, showSignup })(Upper);
+export default connect(null, { showLogin, showSignup })(withRouter(Upper));

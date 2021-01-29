@@ -44,6 +44,10 @@ export const Subtitle = styled.p`
   margin: 0 0 30px 0;
 `;
 
+export const LocationButton = styled.img`
+  cursor: pointer;
+`;
+
 export const CustomButton = styled.button`
   background: ${props => props.background};
   color: ${props => (props.black ? "#000000" : "#ffffff")};
