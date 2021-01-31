@@ -37,7 +37,7 @@ import { Input } from "antd";
 import LoginContainer from "./LoginContainer";
 import SignupContainer from "./SignupContainer";
 
-const Upper = props => {
+const Upper = (props) => {
   const showLoginDrawer = () => {
     props.showLogin();
   };
@@ -88,7 +88,7 @@ const Upper = props => {
                 }}
                 placeholder="Enter your delivery location"
                 suffix={
-                  <a onClick={locate} style={{ border: "none" }}>
+                  <a href="" onClick={locate} style={{ border: "none" }}>
                     <LocationButton src={LocationIcon} />
                   </a>
                 }
