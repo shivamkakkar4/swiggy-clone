@@ -7,7 +7,7 @@ const Restaurants = () => {
   return (
     <>
       <Header />
-      {/* <Middle /> */}
+      <Middle />
       <RestaurantsList />
     </>
   );
