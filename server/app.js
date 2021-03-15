@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 require("dotenv").config();
 
 const PORT = 5000;
@@ -13,12 +14,13 @@ mongoose
   .then(() => {
     console.log("Database connection Success.");
   })
-  .catch((err) => {
+  .catch(err => {
     console.error("Mongo Connection Error", err);
   });
 
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/users", require("./routes/user"));
