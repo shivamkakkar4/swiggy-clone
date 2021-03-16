@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import topPicks from "./Images/List/topPicks.png";
-import topPicksActive from "./Images/List/topPicksActive.png";
-import WhatNew from "./Images/List/WhatNew.png";
-import seeAll from "./Images/List/seeAll.png";
-import onlyOnSwiggy from "./Images/List/onlyOnSwiggy.png";
-import vegetarianOptions from "./Images/List/vegetarianOptions.png";
+import topPicks from "./Images/topPicks.png";
+import topPicksActive from "./Images/topPicksActive.png";
+import WhatNew from "./Images/WhatNew.png";
+import seeAll from "./Images/seeAll.png";
+import onlyOnSwiggy from "./Images/onlyOnSwiggy.png";
+import vegetarianOptions from "./Images/vegetarianOptions.png";
 
 const RestaurantsList = () => {
   const Left = styled.div`
@@ -18,8 +18,8 @@ const RestaurantsList = () => {
   const List = styled.a`
     color: #535665;
     font-weight: bold;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+      "Open Sans", "Helvetica Neue", sans-serif;
     border: none;
     height: 100%;
     width: 100%;
@@ -60,10 +60,7 @@ const RestaurantsList = () => {
   `;
 
   return (
-    <div
-      className="container-fluid"
-      style={{ padding: "0 20px", border: "1px solid black" }}
-    >
+    <div className="container-fluid" style={{ padding: "0 20px", border: "1px solid black" }}>
       <div className="row">
         <Left className="col-3">
           <div className="list-group">

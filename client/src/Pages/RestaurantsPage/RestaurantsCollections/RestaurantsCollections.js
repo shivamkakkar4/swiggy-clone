@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-const Middle = () => {
+
+const RestaurantsCollections = () => {
   const Mid = styled.div`
     height: 47vh;
     padding: 0;
@@ -11,4 +12,4 @@ const Middle = () => {
   return <Mid className="container-fluid">middle</Mid>;
 };
 
-export default Middle;
+export default RestaurantsCollections;
