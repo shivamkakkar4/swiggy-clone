@@ -1,97 +1,100 @@
 import React from "react";
-import styled from "styled-components";
-import topPicks from "./Images/topPicks.png";
-import topPicksActive from "./Images/topPicksActive.png";
-import WhatNew from "./Images/WhatNew.png";
-import seeAll from "./Images/seeAll.png";
-import onlyOnSwiggy from "./Images/onlyOnSwiggy.png";
-import vegetarianOptions from "./Images/vegetarianOptions.png";
+import RestaurantCard from "./RestaurantCard";
 
 const RestaurantsList = () => {
-  const Left = styled.div`
-    height: 60vh;
-    padding: 0 10px 0 0;
-    position: sticky;
-    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 8px 0 rgba(0, 0, 0, 0.1);
-  `;
-
-  const List = styled.a`
-    color: #535665;
-    font-weight: bold;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
-      "Open Sans", "Helvetica Neue", sans-serif;
-    border: none;
-    height: 100%;
-    width: 100%;
-    transition: color 0.25s;
-    &:hover {
-      color: #e46d47;
-    }
-    &:hover span {
-      color: #e46d47;
-    }
-    &:hover img {
-      transform: scale(1.2);
-    }
-    &:active {
-      background-color: #e46d47;
-      color: white;
-    }
-  `;
-
-  const Icon = styled.img`
-    height: 45px;
-    width: 45px;
-    margin: 0 0.7rem;
-    transition: transform 0.4s;
-    &:hover {
-      transform: scale(1.2);
-    }
-  `;
-
-  const SmallText = styled.span`
-    color: #535665;
-    font-size: 10px;
-    font-family: Arial, Helvetica, sans-serif;
-    display: block;
-    margin: 2px 0px 0px;
-    position: relative;
-    left: 30%;
-  `;
-
+  const restaurants = [
+    {
+      id: 1,
+      name: "Pankys Pastry Shop",
+      foodCategory: "Desserts, Snacks",
+      image:
+        "https://images.unsplash.com/photo-1483695028939-5bb13f8648b0?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
+      rating: 4.0,
+      deliveryTime: 39,
+      costForTwo: 200,
+    },
+    {
+      id: 2,
+      name: "Bikanerwala",
+      foodCategory: "Chinese, North Indian",
+      image:
+        "https://images.unsplash.com/photo-1587033649720-6850605eb2f1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1018&q=80",
+      rating: 4.3,
+      deliveryTime: 29,
+      costForTwo: 550,
+    },
+    {
+      id: 3,
+      name: "O'Biryani",
+      foodCategory: "Biryani",
+      image:
+        "https://images.unsplash.com/photo-1542367592-8849eb950fd8?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1189&q=80",
+      rating: 3.5,
+      deliveryTime: 25,
+      costForTwo: 250,
+    },
+    {
+      id: 4,
+      name: "Homely Special Tawa Prantha",
+      foodCategory: "Indian",
+      image:
+        "https://images.unsplash.com/photo-1580064003296-29deb3521370?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
+      rating: 4.1,
+      deliveryTime: 54,
+      costForTwo: 200,
+    },
+    {
+      id: 5,
+      name: "Pankys Pastry Shop",
+      foodCategory: "Desserts, Snacks",
+      image:
+        "https://images.unsplash.com/photo-1483695028939-5bb13f8648b0?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80",
+      rating: 4.0,
+      deliveryTime: 39,
+      costForTwo: 200,
+    },
+    {
+      id: 6,
+      name: "Bikanerwala",
+      foodCategory: "Chinese, North Indian",
+      image:
+        "https://images.unsplash.com/photo-1587033649720-6850605eb2f1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1018&q=80",
+      rating: 4.3,
+      deliveryTime: 29,
+      costForTwo: 550,
+    },
+    {
+      id: 7,
+      name: "O'Biryani",
+      foodCategory: "Biryani",
+      image:
+        "https://images.unsplash.com/photo-1542367592-8849eb950fd8?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1189&q=80",
+      rating: 3.5,
+      deliveryTime: 25,
+      costForTwo: 250,
+    },
+    {
+      id: 8,
+      name: "Homely Special Tawa Prantha",
+      foodCategory: "Indian",
+      image:
+        "https://images.unsplash.com/photo-1580064003296-29deb3521370?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80",
+      rating: 4.1,
+      deliveryTime: 54,
+      costForTwo: 200,
+    },
+  ];
   return (
-    <div className="container-fluid" style={{ padding: "0 20px", border: "1px solid black" }}>
-      <div className="row">
-        <Left className="col-3">
-          <div className="list-group">
-            <List href="#" className="list-group-item list-group-item-action">
-              <Icon src={topPicks} alt=""></Icon>
-              Top Picks
-              <SmallText>71 options</SmallText>
-            </List>
-            <List href="#" className="list-group-item list-group-item-action">
-              <Icon src={WhatNew} alt=""></Icon>
-              Whats's New
-              <SmallText>71 options</SmallText>
-            </List>
-            <List href="#" className="list-group-item list-group-item-action">
-              <Icon src={onlyOnSwiggy} alt=""></Icon>
-              Only On Swiggy
-              <SmallText>71 options</SmallText>
-            </List>
-            <List href="#" className="list-group-item list-group-item-action">
-              <Icon src={vegetarianOptions} alt=""></Icon>
-              Vegetarian Options
-              <SmallText>71 options</SmallText>
-            </List>
-            <List href="#" className="list-group-item list-group-item-action">
-              <Icon src={seeAll} alt=""></Icon>
-              See All
-              <SmallText>71 options</SmallText>
-            </List>
-          </div>
-        </Left>
-        <div className="col-9">right</div>
+    <div className="container pt-4">
+      <div className="px-4">
+        <h3>150 Restaurants</h3>
+        <div className="row">
+          {restaurants.map(restaurant => (
+            <div className="col" key={restaurant.id}>
+              <RestaurantCard restaurant={restaurant} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
